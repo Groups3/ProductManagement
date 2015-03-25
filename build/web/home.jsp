@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,14 +13,36 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World! 2</h1>
-        <TABLE>
-            <c:forEach items="${productsession} var="product">
-                       <tr>
-                    <td><c:out value="${product.id}"/></td>
-                <td><c:out value="${product.name}"/></td>
+        <div>
+            <input name="product" type="text" />
+        </div>
+        <div>
+        <h1>Management Product</h1>
+        <table style="font-family: verdana,arial,sans-serif;
+               font-size:11px;
+               color:#333333;
+               border-width: 1px;
+               border-color: #999999;
+               border-collapse: collapse;">
+            <tr style="background-color: activeborder;
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #999999;">
+                <td style="width: 100px;border-width: 1px; border-style: solid; border-color: #999999;text-align: center;">ID PRODUCT</td>
+                <td style="width: 300px;border-width: 1px; border-style: solid; border-color: #999999;">PRODUCT NAME</td>
+            </tr>
+            <c:forEach items="${productsession}" var="product">
+                <tr style="background-color: activeborder;
+                    border-width: 1px;
+                    padding: 8px;
+                    border-style: solid;
+                    border-color: #999999;">
+                    <td style="width: 100px;border-width: 1px; border-style: solid; border-color: #999999;text-align: center;">${product.id}</td>
+                    <td style="width: 300px;border-width: 1px; border-style: solid; border-color: #999999;">${product.name}</td>
                 </tr>
             </c:forEach>
-        </TABLE>
+        </table>
+        </div>
     </body>
 </html>
