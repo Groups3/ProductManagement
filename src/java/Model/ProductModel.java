@@ -36,13 +36,30 @@ public class ProductModel {
         return list;
     }
 
-    public boolean createData(Product p) {
+    public Product getDataById(int id) {
+        Product product = null;
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection con = DriverManager.getConnection("jdbc:sqlserver://TIENDAT;databaseName=ProManagement", "sa", "123456");
+            PreparedStatement statement = con.prepareStatement("select TOP 1 * from Product where id=?");
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                product = new Product(resultSet.getInt("id"), resultSet.getString("pro_name"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return product;
+    }
+
+    public boolean createData(String pname) {
         boolean result = false;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection("jdbc:sqlserver://TIENDAT;databaseName=ProManagement", "sa", "123456");
             PreparedStatement statement = con.prepareStatement("INSERT INTO product VALUES(?)");
-            statement.setString(1, p.getName());
+            statement.setString(1, pname);
             ResultSet resultSet = statement.executeQuery();
             result = true;
 
@@ -53,13 +70,13 @@ public class ProductModel {
         return result;
     }
 
-    public boolean delete(Product p) {
+    public boolean delete(int id) {
         boolean result = false;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection("jdbc:sqlserver://TIENDAT;databaseName=ProManagement", "sa", "123456");
             PreparedStatement statement = con.prepareStatement("DELETE FROM Product WHERE id=? ");
-            statement.setInt(1, p.getId());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             result = true;
 
@@ -70,14 +87,16 @@ public class ProductModel {
         return result;
     }
 
-    public boolean update(Product p) {
+    public boolean update(Product product) {
         boolean result = false;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             Connection con = DriverManager.getConnection("jdbc:sqlserver://TIENDAT;databaseName=ProManagement", "sa", "123456");
-            PreparedStatement statement = con.prepareStatement("UPDATE Product SET pro_name = ? WHERE id=?");
-            statement.setString(1, p.getName());
-            statement.setInt(1, p.getId());
+            PreparedStatement statement = con.prepareStatement("UPDATE Product SET pro_name = ? WHERE id= ?");
+            statement.setString(1, product.getName());
+            statement.setInt(2, product.getId());
+            int count = statement.executeUpdate();
+            System.out.println(count);
             ResultSet resultSet = statement.executeQuery();
             result = true;
 
